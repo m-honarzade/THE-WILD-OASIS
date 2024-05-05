@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -11,14 +10,24 @@ import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import Settings from "./pages/Settings";
 import AppLayout from "./ui/AppLayout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const StyledApp = styled.main`
-  padding: 20px;
-`;
+// const StyledApp = styled.main`
+//   padding: 20px;
+// `;
 
 const App = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+      },
+    },
+  });
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
@@ -35,7 +44,7 @@ const App = () => {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
-    </>
+    </QueryClientProvider>
   );
 };
 
