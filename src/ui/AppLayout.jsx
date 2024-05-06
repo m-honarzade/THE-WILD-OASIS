@@ -18,6 +18,9 @@ const StyledAppLayout = styled.div`
 const Container = styled.div`
   max-width: 120rem;
   margin: 0 auto;
+  display: felx;
+  flex-direction: column;
+  gap: 3.2rem;
 `;
 
 const AppLayout = () => {
