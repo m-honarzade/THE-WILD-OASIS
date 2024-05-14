@@ -3,7 +3,7 @@ import supabase from "./supabase";
 export async function getSettings() {
   // const { data, error } = await supabase.from("setting").select("*").single();
 
-  let { data, error } = await supabase.from("setting").select("*");
+  let { data, error } = await supabase.from("setting").select("*").single();
 
   if (error) {
     console.error(error);
@@ -27,3 +27,9 @@ export async function updateSetting(newSetting) {
   }
   return data;
 }
+
+// const { data, error } = await supabase
+//   .from('setting')
+//   .update({ other_column: 'otherValue' })
+//   .eq('some_column', 'someValue')
+//   .select()

@@ -4,6 +4,7 @@ import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import useSettings from "./useSettings";
 import Spinner from "../../ui/Spinner";
+import useEditSettings from "./useEditSettings";
 const FormRow = styled.div`
   display: grid;
   align-items: center;
@@ -45,17 +46,37 @@ function UpdateSettingsForm() {
     isLoading,
   } = useSettings();
 
+  const { isEditing, editSetting } = useEditSettings();
+
+  const updateHandler = (e, fieldName) => {
+    const { value } = e.target;
+    if (!value) return;
+    editSetting({ [fieldName]: value });
+  };
+
   if (isLoading) return <Spinner />;
 
   return (
     <Form>
       <FormRow>
         <Label htmlFor="min-nights">Minimum nights/booking</Label>
-        <Input type="number" id="min-nights" defaultValue={minBookingLength} />
+        <Input
+          type="number"
+          id="min-nights"
+          defaultValue={minBookingLength}
+          disabled={isEditing}
+          onBlur={(e) => updateHandler(e, "minBookingLength")}
+        />
       </FormRow>
       <FormRow>
         <Label htmlFor="max-nights">Maximum nights/booking</Label>
-        <Input type="number" id="max-nights" defaultValue={maxBookingLength} />
+        <Input
+          type="number"
+          id="max-nights"
+          defaultValue={maxBookingLength}
+          disabled={isEditing}
+          onBlur={(e) => updateHandler(e, "maxBookingLength")}
+        />
       </FormRow>
       <FormRow>
         <Label htmlFor="max-guests">Maximum guests/booking</Label>
@@ -63,6 +84,8 @@ function UpdateSettingsForm() {
           type="number"
           id="max-guests"
           defaultValue={maxGusetPerBooking}
+          disabled={isEditing}
+          onBlur={(e) => updateHandler(e, "maxGusetPerBooking")}
         />
       </FormRow>
       <FormRow>
@@ -71,6 +94,8 @@ function UpdateSettingsForm() {
           type="number"
           id="breakfast-price"
           defaultValue={breakfestPrice}
+          disabled={isEditing}
+          onBlur={(e) => updateHandler(e, "breakfestPrice")}
         />
       </FormRow>
     </Form>
