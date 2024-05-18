@@ -46,7 +46,7 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   console.log(cabinToEdit);
   const { id: editId, ...editValues } = cabinToEdit;
 
@@ -83,6 +83,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         {
           onSuccess: (data) => {
             reset();
+            onCloseModal?.();
           },
         }
       );
@@ -92,7 +93,10 @@ function CreateCabinForm({ cabinToEdit = {} }) {
     console.log(error);
   };
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
         <Input
@@ -187,7 +191,11 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()} // because it is possible another place we want to use this form and it is not placed in a modal so the fn is not defiend and get error,
+        >
           Cancel
         </Button>
         <Button>{isEditSession ? "Edit Cabin" : "Add cabin"}</Button>
